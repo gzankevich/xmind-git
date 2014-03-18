@@ -1,0 +1,19 @@
+#!/bin/sh
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ -z $XMIND_WORKBOOKS_PATH ]; then
+    workbooksPath="$dir/../"
+else
+    workbooksPath=$XMIND_WORKBOOKS_PATH
+fi
+
+find $workbooksPath -name "*.xmind" | while read line; do
+    unpack `basename $line .xmind`
+done
+
+function unpack()
+{
+    echo "Unpacking $workbookName..."
+    unzip -fd $workbooksPath/$workbookName $line 2>&1 >/dev/null
+}
